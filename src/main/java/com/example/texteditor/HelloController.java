@@ -1,95 +1,75 @@
 package com.example.texteditor;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class HelloController {
 
     @FXML
-    private Button btnEdit;
+    private Button btnCancel;
 
     @FXML
-    private Button btnLock;
+    private Button btnLogin;
 
     @FXML
-    private Button btnOpen;
+    private PasswordField txtPassword;
 
     @FXML
-    private Button btnSave;
+    private TextField txtUsername;
+    @FXML
+    private Button btnLogout;
 
     @FXML
-    private Label lblDisplay;
+    void onLogout(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        Stage logoutStage = (Stage) btnLogout.getScene().getWindow();
+
+        logoutStage.close();
+
+        stage.show();
+    }
 
     @FXML
-    private TextArea txtEditor;
-
-    FileChooser dialogbox = new FileChooser();
-
-
-    @FXML
-    void getCharacters(KeyEvent event) {
-        //CHARACTERS TYPED
-        lblDisplay.setText("Characters typed: "+txtEditor.getText().length());
+    void getUsername(KeyEvent event) {
 
     }
 
     @FXML
-    void onEdit(ActionEvent event) {
-        txtEditor.setEditable(true);
+    void onCancel(ActionEvent event) {
 
     }
 
     @FXML
-    void onExit(ActionEvent event) {
-        //CLOSE APPLICATION
-        Platform.exit();
-    }
+    void onLogin(ActionEvent event) throws IOException {
+        if (txtPassword.getText().equals("1234") && txtUsername.getText().equals("admin") ){
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainApp.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Gidey 1.001");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            Stage loginStage = (Stage) btnLogin.getScene().getWindow();
 
-    @FXML
-    void onLock(ActionEvent event) {
-        txtEditor.setEditable(false);
+            loginStage.close();
 
-    }
-
-    @FXML
-    void onOpen(ActionEvent event) throws FileNotFoundException {
-        //ADD FILTERS TO SHOW ONLY TEXT FILES
-        dialogbox.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt"));
-
-        File selectedFile = dialogbox.showOpenDialog(new Stage());
-        //CHECK HAS USER SELECTED A FILE?
-        if (selectedFile==null){
-            //Do nothing
+            stage.show();
         }else{
-            txtEditor.setText("");
-            Scanner input = new Scanner(selectedFile);
-            while(input.hasNextLine()){
-                txtEditor.appendText(input.nextLine()+"\n");
-            }
-
-            input.close();
-
+            //Do nothing
         }
-        lblDisplay.setText("Characters typed"+txtEditor.getText().length());
-
-
-
-    }
-
-    @FXML
-    void onSave(ActionEvent event) {
-
     }
 
 }
